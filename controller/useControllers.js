@@ -1,4 +1,4 @@
-//!controllers/useControllers.js
+//controllers/useControllers.js
 const asyncHandler = require('../middleware/asyncHandler');
 const Todo = require('../models/todoSchemas');
 
@@ -50,7 +50,7 @@ const getSingleTodo = asyncHandler(async (req, res) => {
   }
 });
 
-//!create a single todo - Post
+//!create a single todo - /:id/Post
 const createATodo = asyncHandler(async (req, res) => {
   try {
     const newTodo = Todo(req.body);
@@ -121,7 +121,7 @@ const updateTodo = asyncHandler(async (req, res) => {
   }
 });
 
-//!delete todo
+//!delete todo - Delete
 const deleteTodo = asyncHandler(async (req, res) => {
   try {
     const todo = await Todo.findByIdAndDelete(req.params.id);
