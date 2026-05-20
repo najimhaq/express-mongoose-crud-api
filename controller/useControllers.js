@@ -5,7 +5,13 @@ const Todo = require('../models/todoSchemas');
 // !get all todos - get
 const getAllTodos = asyncHandler(async (req, res) => {
   try {
-    const todos = await Todo.find();
+    const todos = await Todo.find()
+    // .select({
+    //   _id: 0,
+    //   date: 0,
+    //   createdAt: 0,
+    //   updatedAt: 0,
+    // });
     res.status(200).json({
       success: true,
       count: todos.length,
@@ -20,19 +26,28 @@ const getAllTodos = asyncHandler(async (req, res) => {
   }
 });
 
-//*get a single todo with :id
+//!get a single todo with :id
 const getSingleTodo = asyncHandler(async (req, res) => {
-  const id = parseInt(req.params.id);
-  const todo = Todo.find((todo) => todo.id === id);
-  if (!todo) {
-    res.status(404);
-    throw new Error(`Todo not found with id ${id}`);
+  try {
+    const todos = await Todo.find({_id:req.params.id})
+    // .select({
+    //   _id: 0,
+    //   date: 0,
+    //   createdAt: 0,
+    //   updatedAt: 0,
+    // });
+    res.status(200).json({
+      success: true,
+      count: todos.length,
+      data: todos,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Server error',
+      error: error.message,
+    });
   }
-
-  res.status(200).json({
-    success: true,
-    data: todo,
-  });
 });
 
 //!create a single todo - Post
@@ -130,7 +145,6 @@ const deleteTodo = asyncHandler(async (req, res) => {
     });
   }
 });
-
 
 module.exports = {
   getAllTodos,
